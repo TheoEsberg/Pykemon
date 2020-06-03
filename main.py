@@ -16,6 +16,7 @@ screen = pygame.display.set_mode((screenWidth, screenHeight))
 pygame.display.set_caption("Pykemon Testing Concept")
 clock = pygame.time.Clock()
 
+#   References to the gameHandler
 gameHandler = GameHandler.GameHandler()
 gameHandler.pygame = pygame
 gameHandler.display = screen
@@ -72,5 +73,4 @@ def game_loop():
 game_loop()
 pygame.quit()
 #   Save data in json files on quit
-gameHandler.SaveToJson("pokemons.json", gameHandler.pokemons)
 gameHandler.SaveToJson("caughtPokemons.json", gameHandler.caughtPokemons)

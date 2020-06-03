@@ -34,11 +34,14 @@ class GameHandler:
         self.getStarterActive = False
         self.gotStarterPokemon = False
 
+    #   This is a function that writes a json file depending on what data it gets and the filename it gets
     def writeJSON(self, data, filename):
         with open(filename, "w") as f:
             json.dump(data, f, indent=4)
 
+    #   Load data from json file
     def LoadPokemons(self):
+        #   Load all existing pokemons and appending them to a list
         with open("pokemons.json", "r") as f:
             data = json.load(f)
             for pokemon in data["pokemons"].values():
@@ -54,7 +57,7 @@ class GameHandler:
                 self.pokemons.append(Pokemons.Pokemons(self, name, type, hp, attack, defence, speed, moves, level, xp))
                 print(name, type, hp, attack, defence, speed, moves, level, xp)
                 
-
+        #   Load all caught pokemons and appending them to a list
         with open("caughtPokemons.json", "r") as f:
             data = json.load(f)
             if (data != {}):
@@ -72,8 +75,7 @@ class GameHandler:
                     self.activePokemon = self.caughtPokemons[0]
                     print("FÅNGADE PÅKÄMÅNS", self.caughtPokemons)
 
-
-
+    #   Get data to send to writeJSON function
     def SaveToJson(self, jsonFile, listToSave):
         with open(jsonFile, "r") as f:
             data = json.load(f)
@@ -94,7 +96,7 @@ class GameHandler:
                 temp[i] = y
         self.writeJSON(data, jsonFile)
 
-
+    #   Add pokemon to caught pokemons from all avalible pokemons
     def GetNewPokemon(self, id, caughtID):
         with open("pokemons.json", "r") as f:
             readData = json.load(f)
@@ -113,7 +115,22 @@ class GameHandler:
                     self.caughtPokemons.append(Pokemons.Pokemons(self, name, type, hp, attack, defence, speed, moves, level, xp))
                     print("Caught Pokemons", self.caughtPokemons)
 
-
-
+    #   This will reload the current pokemons list so after a battle all pokemons stats is reset to normal
+    def ReloadPokemons(self):
+        with open("pokemons.json", "r") as f:
+            self.pokemons = []
+            data = json.load(f)
+            for pokemon in data["pokemons"].values():
+                name = pokemon["name"]
+                type = pokemon["type"]
+                hp = pokemon["hp"]
+                attack = pokemon["attack"]
+                defence = pokemon["defence"]
+                speed = pokemon["speed"]
+                moves = pokemon["moves"]
+                level = pokemon["level"]
+                xp = pokemon["xp"]
+                self.pokemons.append(Pokemons.Pokemons(self, name, type, hp, attack, defence, speed, moves, level, xp))
+                print(name, type, hp, attack, defence, speed, moves, level, xp)
 
 

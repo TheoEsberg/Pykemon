@@ -10,6 +10,7 @@ class MenuPykemons(GUI.Gui):
         self.xOffset = (self.gameHandler.displayWidth - self.width - 6) - 24
         self.yOffset = (self.gameHandler.displayHeight / 2 - self.height / 2)
 
+        #   All pokemons texts
         self.pokemon1 = self.font.render("None", True, (0, 0, 0))
         self.pokemon2 = self.font.render("None", True, (0, 0, 0))
         self.pokemon3 = self.font.render("None", True, (0, 0, 0))
@@ -17,6 +18,7 @@ class MenuPykemons(GUI.Gui):
         self.pokemon5 = self.font.render("None", True, (0, 0, 0))
         self.pokemon6 = self.font.render("None", True, (0, 0, 0))
 
+        #   Change the pokemon text if there is an avalible pokemon in the caughtPokemons list inside the gamehandler
         if (len(self.gameHandler.caughtPokemons) == 1):
             self.pokemon1 = self.font.render(self.gameHandler.caughtPokemons[0].name, True, (0, 0, 0))
         elif (len(self.gameHandler.caughtPokemons) == 2):
@@ -33,6 +35,7 @@ class MenuPykemons(GUI.Gui):
 
     def tick(self):
         self.inputs()
+        #   Rendering the GUI
         if (self.showGUI == True):
             self.drawGUI(self.xOffset, self.yOffset, self.width, self.height)
             self.display.blit(self.pokemon1, (self.xOffset + (6 * 8), self.yOffset + (6 * 2)))
@@ -44,6 +47,7 @@ class MenuPykemons(GUI.Gui):
             self.display.blit(self.arrow, (self.xOffset + (6 * 4), self.yOffset + (6 * self.arrowPos)))
 
     def updatePokemonList(self):
+        #   Update the list of pokemons if you get a new pokemon ingame
         if (len(self.gameHandler.caughtPokemons) == 1):
             self.pokemon1 = self.font.render(self.gameHandler.caughtPokemons[0].name, True, (0, 0, 0))
         elif (len(self.gameHandler.caughtPokemons) == 2):
@@ -58,6 +62,7 @@ class MenuPykemons(GUI.Gui):
             self.pokemon6 = self.font.render(self.gameHandler.caughtPokemons[5].name, True, (0, 0, 0))
 
     def inputs(self):
+        #   Get the inputs, move the arrow, you probebly get it by now...
         keys = self.pygame.key.get_pressed()
         if (self.showGUI == True):
             if (keys[self.pygame.K_DOWN]):
@@ -83,6 +88,7 @@ class MenuPykemons(GUI.Gui):
                             print(self.gameHandler.activePokemon.name)
                     self.showGUI = False
 
+            #   Exit menu on escape
             elif (keys[self.pygame.K_ESCAPE]):
                 self.showGUI = False
                

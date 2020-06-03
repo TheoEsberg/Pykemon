@@ -4,14 +4,17 @@ class GetStarter(GUI.Gui):
     def __init__(self, gameHandler):
         super().__init__(gameHandler, "getStarter")
 
+        #   GUI settings
         self.stage = 0
         self.width = 485
         self.height = 85
         self.scaleGUI()
 
+        #   Get a offset for the gui
         self.xOffset = self.gameHandler.displayWidth / 2 - (self.width / 2)
         self.yOffset = self.gameHandler.displayHeight - self.height - 24
         
+        #   All the dialoge texts 
         self.dialoge0 = self.font.render("[Oak] Hello there Ash,", True, (0, 0, 0))
         self.dialoge1 = self.font.render("I am Professor Oak here in Pallet Town", True, (0, 0, 0))
         self.dialoge2 = self.font.render("As you may know, today is the day when", True, (0, 0, 0))
@@ -38,6 +41,7 @@ class GetStarter(GUI.Gui):
 
     def tick(self):
         self.inputs()
+        #   Blitting the dialouges to the screen depending on self.stage value
         if (self.gameHandler.getStarterActive == True and self.stage <= 7):
             self.drawGUI(self.xOffset, self.yOffset, self.width, self.height)
             if (self.stage == 0):
@@ -66,13 +70,14 @@ class GetStarter(GUI.Gui):
                 self.display.blit(self.choose2, (self.xOffset + (self.width / 2) - self.choose2.get_width() / 2, self.yOffset + 32))
                 self.display.blit(self.choose3, (self.xOffset - (self.width / 4) + self.width - self.choose3.get_width() / 4, self.yOffset + 32))
                 self.display.blit(self.arrow, (self.xOffset + self.arrowPos, self.yOffset + 40))
+        #   Check if allready has a pokemon then tell the player to go to next town
         elif (self.gameHandler.gotStarterPokemon == True and self.stage == 9):
             self.drawGUI(self.xOffset, self.yOffset, self.width, self.height)
             self.display.blit(self.dialoge14, (self.xOffset + (self.width / 2) - self.dialoge14.get_width() / 2, self.yOffset + 16))
             self.display.blit(self.dialoge15, (self.xOffset + (self.width / 2) - self.dialoge15.get_width() / 2, self.yOffset + 48))
 
-
     def inputs(self):
+        #   Get the inputs and change the dialouge when pressing enter
         keys = self.pygame.key.get_pressed()
         if (self.gameHandler.getStarterActive == True or self.gameHandler.gotStarterPokemon == True):
             if (keys[self.pygame.K_RETURN]):

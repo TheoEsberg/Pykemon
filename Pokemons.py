@@ -17,16 +17,18 @@ class Pokemons(Entity.Entity):
         self.moves = moves
         self.level = level 
         self.xp = xp
+        self.battleMode = False
 
         #   Pokemons
         self.image = self.gameHandler.pygame.image.load("graphics/pokemons/"+self.name+".gif")
 
-        #   Tepig animation
+        #   Pokemon animation
         self.spriteSheets = SpriteSheets.SpriteSheets(self.gameHandler)
         self.ImageUp = self.spriteSheets.GetPokeSprites(self.image, 32, 32, 1, 1)
         self.ImageDown = self.spriteSheets.GetPokeSprites(self.image, 32, 32, 1, 3)
         self.ImageLeft = self.spriteSheets.GetPokeSprites(self.image, 32, 32, 2, 1)
         self.ImageRight = self.spriteSheets.GetPokeSprites(self.image, 32, 32, 2, 3)
+        self.ImageBattle = self.gameHandler.pygame.image.load("graphics/pokemons/Battle/"+self.name+".gif")
         self.currentAnim = self.ImageUp
 
         #   Timer
@@ -35,6 +37,7 @@ class Pokemons(Entity.Entity):
         self.steps = 0
 
     def renderPokemon(self):
+        #   Render the pokemon depending on the latest steps from the player
         if (self.x + self.width <= self.gameHandler.recentSteps[1][0]):
             self.x += self.MoveSpeed
             self.currentAnim = self.ImageRight
@@ -47,20 +50,25 @@ class Pokemons(Entity.Entity):
         if (self.y >= self.gameHandler.recentSteps[1][1]):
             self.y -= self.MoveSpeed
             self.currentAnim = self.ImageUp
-      
+        
         self.gameHandler.display.blit(self.currentAnim[self.steps], (self.x - self.gameHandler.camera.xOffset, 
                                                                      self.y - self.gameHandler.camera.yOffset + 32))
 
     def tick(self):
-        if (self.allowTick == False):
+        #   Deceding what to render dependin on in battle or not
+        if (self.allowTick == False and self.battleMode == False):
             return
 
-        self.renderPokemon()
-        self.timer.UpdateTimer()
-        if (self.timer.Finished == True):
-            self.timer.Start()
-            self.countSteps()
-
+        if (self.battleMode == False):
+            self.renderPokemon()
+            self.timer.UpdateTimer()
+            if (self.timer.Finished == True):
+                self.timer.Start()
+                self.countSteps()
+        else: 
+            self.gameHandler.display.blit(self.ImageBattle, (self.x - 16, self.y - 32))
+   
+    #   Animation steps handler
     def countSteps(self):
         if (self.steps + 1 >= 2):
             self.steps = 0

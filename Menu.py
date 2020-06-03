@@ -10,12 +10,14 @@ class Menu(GUI.Gui):
         self.xOffset = (self.gameHandler.displayWidth - self.width - 6) - 24
         self.yOffset = (self.gameHandler.displayHeight / 2 - self.height / 2)
 
+        #   This is the gui texts
         self.guiTxt = self.font.render("Inventory", True, (0, 0, 0))
         self.pykemonsTxt = self.font.render("Pykemons", True, (0, 0, 0))
         self.exitTxt = self.font.render("Exit", True, (0, 0, 0))
 
     def tick(self):
         self.inputs()
+        #   Render the gui
         if (self.showGUI == True):
             self.drawGUI(self.xOffset, self.yOffset, self.width, self.height)
             self.display.blit(self.guiTxt, (self.xOffset + (6 * 8), self.yOffset + (6 * 2)))
@@ -24,12 +26,15 @@ class Menu(GUI.Gui):
             self.display.blit(self.arrow, (self.xOffset + (6 * 4), self.yOffset + (6 * self.arrowPos)))
 
     def inputs(self):
+        #   Getting the inputs
         keys = self.pygame.key.get_pressed()
+        #   Open the gui by pressing the buttin "i"
         if (keys[self.pygame.K_i]):
             if (self.pressed == False):
                 self.pressed = True
                 self.showGUI = not self.showGUI
         elif (self.showGUI == True):
+            #   Move the arrow with up and down
             if (keys[self.pygame.K_DOWN]):
                 if (self.pressed == False):
                     self.pressed = True
@@ -45,6 +50,7 @@ class Menu(GUI.Gui):
                     else:
                         self.arrowPos -= 4
             elif (keys[self.pygame.K_RETURN]):
+                #   Going to correct menu depending on arrow position
                 if (self.pressed == False):
                     self.pressed = True
                     if (self.arrowPos == 3.25):

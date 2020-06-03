@@ -3,7 +3,6 @@ import pytmx, os
 path = os.path.dirname(__file__)
 os.chdir(path)
 
-#   Klass for mina Maps
 class Maps:
     def __init__(self, gameHandler):
         self.gameHandler = gameHandler
@@ -12,7 +11,8 @@ class Maps:
         self.screen = gameHandler.display
 
     def render(self):
-        #   Renderar mappen genom att ga igenom alla lager av min tmx fil och "blit":a dem pa skarmen
+        #   Rendering the map by going through each layer and blitting the correct tile on the correct position.
+        #   This also makes sure to not blitting images outside of the camera to save on performance
         self.ti = self.gameHandler.currentMap.get_tile_image_by_gid
         xStart = max(0, self.gameHandler.camera.xOffset / self.gameHandler.currentMap.tilewidth)
         xEnd = min(self.gameHandler.currentMap.width, (self.gameHandler.camera.xOffset + self.gameHandler.displayWidth) / self.gameHandler.currentMap.tilewidth + 1)

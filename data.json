@@ -1,0 +1,100 @@
+{
+    "pokemons": {
+        "0": {
+            "name": "Snivy",
+            "type": "Grass",
+            "hp": 45,
+            "attack": 45,
+            "defence": 55,
+            "speed": 63,
+            "moves": [
+                "Tackle",
+                "null",
+                "null",
+                "null"
+            ],
+            "level": 1,
+            "xp": 0
+        },
+        "1": {
+            "name": "Tepig",
+            "type": "Fire",
+            "hp": 65,
+            "attack": 63,
+            "defence": 45,
+            "speed": 45,
+            "moves": [
+                "Tackle",
+                "null",
+                "null",
+                "null"
+            ],
+            "level": 1,
+            "xp": 0
+        },
+        "2": {
+            "name": "Oshawott",
+            "type": "Water",
+            "hp": 55,
+            "attack": 55,
+            "defence": 45,
+            "speed": 45,
+            "moves": [
+                "Tackle",
+                "null",
+                "null",
+                "null"
+            ],
+            "level": 1,
+            "xp": 0
+        },
+        "3": {
+            "name": "Patrat",
+            "type": "Normal",
+            "hp": 45,
+            "attack": 55,
+            "defence": 39,
+            "speed": 42,
+            "moves": [
+                "Tackle",
+                "null",
+                "null",
+                "null"
+            ],
+            "level": 1,
+            "xp": 0
+        },
+        "4": {
+            "name": "Lillipup",
+            "type": "Normal",
+            "hp": 45,
+            "attack": 60,
+            "defence": 45,
+            "speed": 55,
+            "moves": [
+                "Leer",
+                "null",
+                "null",
+                "null"
+            ],
+            "level": 1,
+            "xp": 0
+        },
+        "5": {
+            "name": "Purrloin",
+            "type": "Dark",
+            "hp": 41,
+            "attack": 50,
+            "defence": 37,
+            "speed": 66,
+            "moves": [
+                "Growl",
+                "null",
+                "null",
+                "null"
+            ],
+            "level": 1,
+            "xp": 0
+        }
+    }
+}

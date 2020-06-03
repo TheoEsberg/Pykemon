@@ -3,19 +3,20 @@ import pytmx, os, random
 path = os.path.dirname(__file__)
 os.chdir(path)
 
-#   Importerar classer
+#   Import my classes
 import Timer, Entity, Maps, SpriteSheets, Pokemons
 
-#   klassen for min Player
+#   Inherit from the Entity class
 class Player(Entity.Entity):
     def __init__(self, x, y, width, height, layer, gameHandler):
-        super().__init__(x, y, width, height, layer, gameHandler) #Kallar pa klassen Entity och startar den! 
+        super().__init__(x, y, width, height, layer, gameHandler) 
         self.allowTick = True
+        self.pressed = True
 
-        #   Variablar for hantering utav sprites
+        #   Get the players sprite sheet
         self.spriteSheets = SpriteSheets.SpriteSheets(self.gameHandler)
 
-        #   Laddar in alla bilder for splearens animationer
+        #   Loading all sprites from the sprite sheet to be used in animation
         pygame = gameHandler.pygame
         self.AshSheet = pygame.image.load("graphics/players/ash/Sprite(32x64).gif")
         self.ashLeft = self.spriteSheets.GetSprites(self.AshSheet, 32, 64, 4, 6)
@@ -29,28 +30,29 @@ class Player(Entity.Entity):
         self.currentAnim = self.ashDownIdle
         self.pokeball = pygame.image.load("graphics/items/pokeball.gif")
 
-        #   Variablar for steps
+        #   Steps varables
         self.steps = 0
         self.countSteps()
 
-        #   Variablar for animationer
+        #   Animation variables
+        #   Self.timer is for the speed of the animation
         self.timer = Timer.Timer(.125)
         self.timer.Start()
         self.looking = ""
 
-        #   Variablar for kollision
+        #   Get the width and height of the screen
         self.screenWidth = gameHandler.displayWidth
         self.screenHeight = gameHandler.displayHeight
 
-        #   Variablar for Maps
+        #   The maps variables
         self.maps = Maps.Maps(self.gameHandler)
-        self.pressed = True
 
         #   Set the players latest steps to be its current position
         for i in range(2):
             self.gameHandler.recentSteps.append([self.x, self.y])
 
-    #   Tick, körs hela tiden som en update loop
+    #   This is the tick function, works like a Update() in C#
+    #   It's being updated each frame from main.py
     def tick(self):
         self.move()
         self.lastPos()
@@ -68,14 +70,14 @@ class Player(Entity.Entity):
     def renderPlayer(self):
         self.display.blit(self.currentAnim[self.steps], (self.x - self.gameHandler.camera.xOffset, self.y - self.gameHandler.camera.yOffset))
 
-    #   CountSteps updaterar vilken frame min animation ar i en gang varje X sekund
-    #   I detta fallet ar det en gang per 0.125 sekunder
+    #   Update which step im currently on and add one each time this is being called
     def countSteps(self):
         if (self.steps + 1 >= len(self.currentAnim)):
             self.steps = 0
         else:
             self.steps += 1
 
+    #   Lastpos is used so that the pokemon can follow my latest position, currently saves my 2 latest positions, saves each 32 pixels aka each tile
     def lastPos(self):
         if (self.gameHandler.recentSteps[0][0] - self.x >= 32):
             self.gameHandler.recentSteps.insert(0, [self.x, self.y])
@@ -94,6 +96,7 @@ class Player(Entity.Entity):
             self.gameHandler.recentSteps.pop()
             self.moved = True
 
+    #   Just a simple running function when pressing SHIFT
     def running(self):
         keys = self.pygame.key.get_pressed()
         if keys[self.pygame.K_LSHIFT]:
@@ -105,9 +108,9 @@ class Player(Entity.Entity):
             if (self.gameHandler.activePokemon != None):
                 self.gameHandler.activePokemon.MoveSpeed = 2
 
-    #   Movement funktionen far spelarens rorelseformagor
+    #   Movement function to move the player
     def move(self):
-        #   Andrar rorelse och animation beroende pa nedtryckt knapp
+        #   Change the animation depending on current button pressed
         keys = self.pygame.key.get_pressed()
         if keys[self.pygame.K_a]:
             self.xVel = -self.MoveSpeed
@@ -136,10 +139,12 @@ class Player(Entity.Entity):
             else:
                 self.currentAnim = self.ashDownIdle
 
+        #   If it is not collideing then apply the movement
         if (self.collision() == False): 
             self.x += self.xVel
             self.y += self.yVel
 
+        #   Reset the velocity to 0 so the player does not accelerate faster and faster each frame
         self.xVel = 0
         self.yVel = 0
 
@@ -162,7 +167,7 @@ class Player(Entity.Entity):
                 self.display.blit(self.transition, (0, 0))
                 self.pygame.display.update()
                 self.pygame.time.delay(1)
-           
+    #   Transition (white fade, in and out fast)
     def battleTransition(self):
         self.transition = self.gameHandler.pygame.Surface((self.screenWidth, self.screenHeight))
         self.transition.fill((255, 255, 255))
@@ -193,6 +198,7 @@ class Player(Entity.Entity):
                 if(self.pressed == False):
                     self.pressed = True
                     if (self.gameHandler.activePokemon.allowTick == False):
+                        #   Throw the ball in different directions
                         if (self.looking == "right"):
                             for i in range(64):
                                 self.xBallOffset = 16
@@ -255,6 +261,7 @@ class Player(Entity.Entity):
             else:
                 self.pressed = False
 
+    #   Render the ball when throwing it
     def renderBall(self):    
         self.maps.render()
         self.renderPlayer()
@@ -263,7 +270,7 @@ class Player(Entity.Entity):
         self.pygame.display.update()
         
                     
-    #   Kollisions hantering
+    #   This is where the collision is beeing handled
     def collision(self):
         playerCol = self.pygame.Rect(self.x - 16 + self.xVel, self.y + 24 + self.yVel, 32, 20)
         for tile_object in self.gameHandler.currentMap.objects:
@@ -271,9 +278,11 @@ class Player(Entity.Entity):
                                 tile_object.y - (self.gameHandler.currentMap.tileheight / 2), 
                                 tile_object.width, tile_object.height).colliderect(playerCol) == True:
 
+                #   If I Collide with a wall object than I will return false and not apply any movement
                 if tile_object.name == "wall":
                     return True
 
+                #   If colided with a name then do something, for example goto a house, downstairs, upstairs excetera.
                 elif tile_object.name == "home_door_in":
                     self.x = (self.gameHandler.currentMap.tilewidth * 2.5)
                     self.y = (self.gameHandler.currentMap.tileheight * 5.5)
