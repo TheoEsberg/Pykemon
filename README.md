@@ -57,14 +57,15 @@ I have learnt sooo much in this project and probably googled a thousend question
 Because I now know more than I did in the start about Python programming and how it is working with classes,
 json files, tmx files and much much more. 
 Here are some of the things I have learnt in this project.
-    * How to read and write to JSON files correctly
-    * How to create basic classes
-    * How to inherit a class from another class, (such as entity is the base class for player and pokemon)
-    * How to read tmx files
-    * How to blit tiles to the screen from tmx files
-    * The struggle of starting something then a week or two later realizing that the code is spaghetti and redo EVERYTHING!
-    * How to handle images and getting subsurfaces of images
-    * How to use the pylint library
+
+* How to read and write to JSON files correctly
+* How to create basic classes
+* How to inherit a class from another class, (such as entity is the base class for player and pokemon)
+* How to read tmx files
+* How to blit tiles to the screen from tmx files
+* The struggle of starting something then a week or two later realizing that the code is spaghetti and redo EVERYTHING!
+* How to handle images and getting subsurfaces of images
+* How to use the pylint library
 
 # Discussion
 To summerize this project I want to say that Im proud of what I managed to accomplish in the time that I had.
